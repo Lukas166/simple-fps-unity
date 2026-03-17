@@ -1,126 +1,88 @@
-# Shooting Target Game (Unity)
+# Simple FPS Unity
 
 ## Overview
 
-This project is a simple FPS-style shooting game built with Unity. The player shoots randomly spawned targets while progressing through stages. Each stage increases the difficulty by spawning more targets and reducing the probability of larger targets appearing.
+Simple FPS Unity is a small first-person shooter prototype built with the Unity game engine. The project focuses on core FPS mechanics such as raycast shooting, randomly spawned targets, stage progression, and score tracking.
 
-The game tracks score and stage progression, and stores the highest score and stage locally using Unity PlayerPrefs.
+Targets spawn in a 3D area above a defined spawn center. As the player progresses through stages, the number of targets increases while large targets become less frequent.
+
+The game stores the highest score and highest stage locally using Unity's PlayerPrefs system.
 
 ## Features
 
-* FPS-style shooting using raycast
-* Random target spawning in a defined 3D area
-* Targets spawn above a defined spawn center with a maximum height limit
-* Randomized target scale (normal to large targets)
-* Increasing difficulty across stages
-* Score and stage tracking
-* High score and highest stage saved locally
-* UI built with TextMeshPro
+* First-person shooting using raycasting
+* Random target spawning within a configurable 3D area
+* Targets with variable size (normal to large targets up to 5× scale)
+* Stage progression with increasing difficulty
+* Score tracking and stage display using TextMeshPro
+* Local high score and highest stage persistence
+* Basic FPS player movement and mouse look
 
-## Gameplay Mechanics
+## Gameplay
 
-### Target Spawning
+The player controls a first-person camera and shoots targets that appear in the environment.
 
-Targets spawn within a defined area around a spawn center.
+Each destroyed target increases the player's score. When all targets in the current stage are destroyed, the game automatically advances to the next stage where more targets will spawn.
 
-* Horizontal position (X, Z) is randomized within a spawn radius
-* Vertical position (Y) spawns between the spawn center and a defined maximum height above it
-* Example: if the max height is 15, targets spawn between `spawnCenter.y` and `spawnCenter.y + 15`
+## Controls
 
-### Target Size
+Default controls:
 
-Targets have two possible sizes:
-
-* Normal size (scale = 1)
-* Large targets (random scale up to 5x)
-
-The chance of spawning large targets decreases as the stage increases.
-
-### Stage Progression
-
-* Stage 1 begins with 3 targets
-* Each new stage increases the number of targets by 2
-* When all targets in a stage are destroyed, the next stage begins automatically
-
-### Scoring
-
-* Each destroyed target grants 10 points
-* Score is displayed on screen
-* High score and highest stage are saved locally
+* **W / A / S / D** — Move the player
+* **Space** — Jump 
+* **Mouse** — Look around / aim
+* **Left Mouse Button** — Shoot
 
 ## Project Structure
 
-Typical scene structure:
+Main scripts and components in the project:
 
-```
-Scene
-├── Player
-│   └── Main Camera
-├── Gun
-│   └── RaycastGun Script
-├── GameManager
-├── SpawnCenter
-└── Canvas
-    ├── ScoreText
-    └── StageText
-```
+* **GameManager.cs**
+  Handles stage progression, target spawning, score tracking, and saving player progress.
 
-## Setup
+* **RaycastGun.cs**
+  Implements the shooting system using raycasting, including effects such as muzzle flash, recoil, and sound.
 
-### Requirements
+* **TargetObjek.cs**
+  Script attached to targets that notifies the GameManager when a target is destroyed.
 
-* Unity (recommended: Unity 2021+ or newer)
-* TextMeshPro package installed
+* **playerMovement.cs**
+  Basic first-person movement controller.
 
-### Scene Setup
+* **mouseLook.cs**
+  Handles camera rotation and mouse look behavior.
 
-1. Create an empty GameObject called `GameManager`
+## Running the Project
 
-2. Attach the `GameManager` script
+1. Clone the repository:
+   git clone https://github.com/Lukas166/simple-fps-unity.git
 
-3. Assign the following in the Inspector:
+2. Open the project in Unity (Unity 2021 or newer recommended).
 
-   * `Score Text`
-   * `Stage Text`
-   * `Target Prefab`
-   * `Spawn Center`
+3. Open the scene located at:
+   Assets/Scenes/SampleScene.unity
 
-4. Create an empty GameObject called `SpawnCenter` and place it in the center of the spawn area.
+4. Press **Play** to start the game.
 
-5. Ensure the target prefab contains:
+## Data Persistence
 
-   * Collider
-   * Tag (e.g. `target`)
-   * Script that calls `GameManager.instance.TargetDestroyed()` when destroyed.
+The game stores the following values locally using PlayerPrefs:
 
-## How to Play
+* Highest score achieved
+* Highest stage reached
 
-1. Start the game.
-2. Aim using the camera.
-3. Shoot targets using the fire button.
-4. Destroy all targets in the current stage to advance to the next stage.
-5. Try to achieve the highest score and stage possible.
+These values persist between play sessions.
 
-## Data Storage
+## Possible Improvements
 
-The game stores progress locally using Unity PlayerPrefs:
+Future extensions for the project could include:
 
-* `SavedHighScore`
-* `SavedHighStage`
-
-These values persist between game sessions.
-
-## Future Improvements
-
-Possible improvements include:
-
-* Moving targets
-* Different target types
+* Moving or AI-controlled targets
+* Different target types with different scores
+* Improved visual effects and sound design
 * Difficulty scaling adjustments
-* Visual effects for impacts
-* Sound and lighting improvements
-* Score scaling based on target size
+* Menu system and game UI improvements
 
 ## License
 
-This project is for educational and experimentation purposes.
+This project is intended for educational and experimental purposes.
